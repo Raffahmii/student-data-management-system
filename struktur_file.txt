@@ -1,0 +1,77 @@
+abu_datasiswa/
+├── admin_tu/              # Admin Tata Usaha (full akses)
+│   ├── dashboard.php
+│   ├── siswa.php
+│   ├── siswa_tambah.php
+│   ├── siswa_edit.php
+│   ├── kelas.php
+│   ├── guru.php
+│   ├── tahun_ajaran.php
+│   ├── riwayat.php
+│   ├── riwayat_detail.php
+│   ├── audit_log.php
+│   ├── import_export.php
+│   ├── manajemen_akun.php
+│   ├── profile.php
+│   └── logout.php
+│
+├── dapodik/               # Operator Dapodik
+│   ├── dashboard.php
+│   ├── siswa.php
+│   ├── siswa_tambah.php
+│   ├── siswa_edit.php
+│   ├── riwayat.php
+│   ├── riwayat_detail.php
+│   ├── audit_log.php
+│   ├── profile.php
+│   └── logout.php
+│
+├── wakil_kepsek/          # Wakil Kepala Sekolah
+│   ├── dashboard.php
+│   ├── siswa.php
+│   ├── kelas.php
+│   ├── riwayat.php
+│   ├── riwayat_detail.php
+│   ├── export_siswa.php
+│   ├── profile.php
+│   └── logout.php
+│
+├── kepsek/                # Kepala Sekolah
+│   ├── dashboard.php
+│   ├── siswa.php
+│   ├── kelas.php
+│   ├── guru.php
+│   ├── export_siswa.php
+│   ├── profile.php
+│   └── logout.php
+│
+├── auth/                  # Autentikasi
+│   ├── login.php
+│   └── logout.php
+│
+├── tahun-ajaran/          # Pemilihan tahun ajaran
+│   └── tahun.php
+│
+├── config/                # Konfigurasi
+│   └── config.php
+│
+├── includes/              # Komponen global
+│   ├── sidebar.php
+│   ├── navbar.php
+│   ├── footer.php
+│   └── audit_logger.php
+│
+├── assets/                # Asset statis
+│   ├── css/
+│   │   └── admin-style.css
+│   └── js/
+│       └── admin.js
+│
+├── foto/                  # Gambar landing page
+│   ├── logo.png
+│   └── foto-lingkungan.png
+│
+├── uploads/               # Upload foto profil
+│   └── default-avatar.png
+│
+└── index.php              # Landing page

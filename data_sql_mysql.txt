@@ -1,0 +1,212 @@
+-- ============================================
+-- DATABASE: abu_datasiswa
+-- MySQL 5.7+ / MariaDB 10+
+-- SISTEM 6 TANGGA DENGAN 4 ROLE
+-- ============================================
+
+CREATE DATABASE IF NOT EXISTS abu_datasiswa;
+USE abu_datasiswa;
+
+-- ============================================
+-- 1. TABEL GURU
+-- ============================================
+CREATE TABLE IF NOT EXISTS guru (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100) NOT NULL,
+    nip VARCHAR(50) UNIQUE NOT NULL,
+    no_hp VARCHAR(20),
+    mata_pelajaran VARCHAR(100),
+    status ENUM('aktif', 'nonaktif') DEFAULT 'aktif',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- 2. TABEL USERS (4 ROLE)
+-- ============================================
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin_tu', 'wakil_kepala_sekolah', 'dapodik', 'kepala_sekolah') NOT NULL,
+    foto VARCHAR(255) DEFAULT 'default-avatar.png',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- 3. TABEL TAHUN AJARAN
+-- ============================================
+CREATE TABLE IF NOT EXISTS tahun_ajaran (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tahun VARCHAR(20) NOT NULL,
+    semester ENUM('Ganjil', 'Genap') NOT NULL,
+    status ENUM('aktif', 'tidak_aktif') DEFAULT 'tidak_aktif',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- 4. TABEL KELAS
+-- ============================================
+CREATE TABLE IF NOT EXISTS kelas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nama_kelas VARCHAR(50) NOT NULL,
+    tingkat ENUM('X', 'XI', 'XII') NOT NULL,
+    wali_kelas_id INT,
+    tahun_ajaran_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (wali_kelas_id) REFERENCES guru(id) ON DELETE SET NULL,
+    FOREIGN KEY (tahun_ajaran_id) REFERENCES tahun_ajaran(id) ON DELETE CASCADE
+);
+
+-- ============================================
+-- 5. TABEL SISWA
+-- ============================================
+CREATE TABLE IF NOT EXISTS siswa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nisn VARCHAR(20) NOT NULL,
+    nama VARCHAR(100) NOT NULL,
+    tanggal_lahir DATE NOT NULL,
+    jenis_kelamin ENUM('L', 'P') NOT NULL,
+    alamat TEXT,
+    no_hp VARCHAR(20),
+    kelas_id INT,
+    tahun_ajaran_id INT NOT NULL,
+    tangga INT DEFAULT 1,
+    status ENUM('Aktif', 'Lulus', 'Dipindahkan', 'Mati') DEFAULT 'Aktif',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (kelas_id) REFERENCES kelas(id) ON DELETE SET NULL,
+    FOREIGN KEY (tahun_ajaran_id) REFERENCES tahun_ajaran(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_nisn_tahun (nisn, tahun_ajaran_id)
+);
+
+-- ============================================
+-- 6. TABEL RIWAYAT SISWA
+-- ============================================
+CREATE TABLE IF NOT EXISTS riwayat_siswa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    siswa_id INT NOT NULL,
+    kelas_id INT NOT NULL,
+    tahun_ajaran_id INT NOT NULL,
+    tangga INT NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    created_at DATE DEFAULT CURRENT_DATE,
+    FOREIGN KEY (siswa_id) REFERENCES siswa(id) ON DELETE CASCADE,
+    FOREIGN KEY (kelas_id) REFERENCES kelas(id) ON DELETE CASCADE,
+    FOREIGN KEY (tahun_ajaran_id) REFERENCES tahun_ajaran(id) ON DELETE CASCADE
+);
+
+-- ============================================
+-- 7. TABEL AUDIT LOG
+-- ============================================
+CREATE TABLE IF NOT EXISTS audit_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    aksi VARCHAR(50) NOT NULL,
+    deskripsi TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- ============================================
+-- 8. TABEL IMPORT EXPORT LOG
+-- ============================================
+CREATE TABLE IF NOT EXISTS import_export_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    tipe VARCHAR(20),
+    file VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- ============================================
+-- INDEX UNTUK PERFORMA
+-- ============================================
+CREATE INDEX idx_siswa_nisn ON siswa(nisn);
+CREATE INDEX idx_siswa_kelas ON siswa(kelas_id);
+CREATE INDEX idx_siswa_tahun ON siswa(tahun_ajaran_id);
+CREATE INDEX idx_siswa_tangga ON siswa(tangga);
+CREATE INDEX idx_riwayat_siswa ON riwayat_siswa(siswa_id);
+CREATE INDEX idx_riwayat_tangga ON riwayat_siswa(tangga);
+CREATE INDEX idx_audit_created ON audit_log(created_at);
+CREATE INDEX idx_audit_user ON audit_log(user_id);
+CREATE INDEX idx_kelas_tahun ON kelas(tahun_ajaran_id);
+CREATE INDEX idx_kelas_tingkat ON kelas(tingkat);
+CREATE INDEX idx_guru_nip ON guru(nip);
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_role ON users(role);
+
+-- ============================================
+-- DATA AWAL (SEEDS) - 4 ROLE
+-- ============================================
+
+-- Insert guru
+INSERT INTO guru (nama, nip, mata_pelajaran, status) VALUES
+('Dr. Ahmad Subagyo, M.Pd.', '197001011994021001', 'Kajur RPL', 'aktif'),
+('Budi Santoso, S.Kom.', '198003101005011001', 'Pemrograman Web', 'aktif'),
+('Dewi Lestari, S.Pd.', '198507201010022002', 'Basis Data', 'aktif'),
+('Eko Prasetyo, S.T.', '198812152010031003', 'Jaringan Komputer', 'aktif'),
+('Fitri Handayani, S.Si.', '199003202015042004', 'Matematika', 'aktif');
+
+-- Insert users (password plain text) - 4 ROLE
+INSERT INTO users (name, email, password, role) VALUES
+('Admin Tata Usaha', 'admin@sekolah.id', 'admin123', 'admin_tu'),
+('Wakil Kepala Sekolah', 'wakil@sekolah.id', 'wakil123', 'wakil_kepala_sekolah'),
+('Operator Dapodik', 'dapodik@sekolah.id', 'dapodik123', 'dapodik'),
+('Kepala Sekolah', 'kepsek@sekolah.id', 'kepsek123', 'kepala_sekolah');
+
+-- Insert tahun ajaran (6 semester untuk 3 tahun)
+INSERT INTO tahun_ajaran (tahun, semester, status) VALUES
+('2024/2025', 'Ganjil', 'aktif'),   -- tangga 1
+('2024/2025', 'Genap', 'tidak_aktif'), -- tangga 2
+('2025/2026', 'Ganjil', 'tidak_aktif'), -- tangga 3
+('2025/2026', 'Genap', 'tidak_aktif'), -- tangga 4
+('2026/2027', 'Ganjil', 'tidak_aktif'), -- tangga 5
+('2026/2027', 'Genap', 'tidak_aktif'); -- tangga 6
+
+-- Insert kelas (lengkap untuk setiap tingkat dan tahun ajaran)
+-- Kelas untuk X (2024/2025 Ganjil & Genap)
+INSERT INTO kelas (nama_kelas, tingkat, wali_kelas_id, tahun_ajaran_id) VALUES
+('X RPL 1', 'X', 2, 1),
+('X RPL 1', 'X', 2, 2),
+('X RPL 2', 'X', 5, 1);
+
+-- Kelas untuk XI (2025/2026 Ganjil & Genap)
+INSERT INTO kelas (nama_kelas, tingkat, wali_kelas_id, tahun_ajaran_id) VALUES
+('XI RPL 1', 'XI', 3, 3),
+('XI RPL 1', 'XI', 3, 4),
+('XI RPL 2', 'XI', 4, 3);
+
+-- Kelas untuk XII (2026/2027 Ganjil & Genap)
+INSERT INTO kelas (nama_kelas, tingkat, wali_kelas_id, tahun_ajaran_id) VALUES
+('XII RPL 1', 'XII', 4, 5),
+('XII RPL 1', 'XII', 4, 6),
+('XII RPL 2', 'XII', 3, 5);
+
+-- Insert siswa untuk X RPL 1 (tangga 1, tahun ajaran 2024/2025 Ganjil)
+INSERT INTO siswa (nisn, nama, tanggal_lahir, jenis_kelamin, alamat, no_hp, kelas_id, tahun_ajaran_id, tangga, status)
+SELECT
+    CONCAT('2024', LPAD(seq, 5, '0')) AS nisn,
+    CONCAT(ELT((seq % 2) + 1, 'Putra', 'Putri'), ' Siswa ', seq) AS nama,
+    DATE_SUB('2008-01-01', INTERVAL seq DAY) AS tanggal_lahir,
+    IF(seq % 2 = 0, 'P', 'L') AS jenis_kelamin,
+    CONCAT('Jl. Pendidikan No. ', seq) AS alamat,
+    CONCAT('08', LPAD(seq + 10000000, 9, '0')) AS no_hp,
+    1 AS kelas_id,
+    1 AS tahun_ajaran_id,
+    1 AS tangga,
+    'Aktif' AS status
+FROM (
+    SELECT 1 AS seq UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION
+    SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION
+    SELECT 11 UNION SELECT 12 UNION SELECT 13 UNION SELECT 14 UNION SELECT 15 UNION
+    SELECT 16 UNION SELECT 17 UNION SELECT 18 UNION SELECT 19 UNION SELECT 20 UNION
+    SELECT 21 UNION SELECT 22 UNION SELECT 23 UNION SELECT 24 UNION SELECT 25 UNION
+    SELECT 26 UNION SELECT 27 UNION SELECT 28 UNION SELECT 29 UNION SELECT 30 UNION
+    SELECT 31 UNION SELECT 32 UNION SELECT 33 UNION SELECT 34 UNION SELECT 35 UNION SELECT 36
+) AS numbers;

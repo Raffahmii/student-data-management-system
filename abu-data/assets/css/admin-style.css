@@ -1,0 +1,522 @@
+/* ============================================
+   ABU DATASISWA - FORCE PERSEGI PANJANG
+   TIDAK ADA BORDER-RADIUS SATU PUN
+============================================ */
+
+/* FORCE OVERRIDE - SEMUA BORDER-RADIUS JADI 0 */
+*,
+*::before,
+*::after,
+.card,
+.card-header,
+.card-body,
+.stat-card,
+.recent-box,
+.kelas-item,
+.modal,
+.modal-content,
+.btn,
+.btn-filter,
+.btn-reset,
+.btn-action,
+.pagination a,
+.pagination span,
+input,
+select,
+textarea,
+.filter-bar,
+.alert,
+.sidebar,
+.sidebar-item,
+.sidebar-brand,
+.profile-dropdown,
+.navbar,
+.navbar-toggle,
+.role-badge,
+.profile-avatar,
+.profile-avatar-img {
+    border-radius: 0 !important;
+}
+
+:root {
+    --white: #ffffff;
+    --bg-light: #f8fafc;
+    --text-dark: #0f172a;
+    --text-muted: #475569;
+    --border-light: #e2e8f0;
+    --blue-soft: #60a5fa;
+    --blue-medium: #3b82f6;
+    --blue-dark: #2563eb;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    overflow-x: hidden;
+    font-size: 16px;
+}
+
+/* ========== SIDEBAR ========== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    color: #94a3b8;
+    transition: all 0.3s;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar-brand {
+    padding: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    margin-bottom: 1rem;
+    color: white;
+}
+.sidebar-brand span {
+    color: #3b82f6;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0 1rem;
+}
+
+.sidebar-item {
+    padding: 0.75rem 1rem;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+.sidebar-item i {
+    width: 22px;
+    font-size: 1.1rem;
+}
+.sidebar-item:hover {
+    background: rgba(59,130,246,0.1);
+    color: #3b82f6;
+}
+.sidebar-item.active {
+    background: rgba(59,130,246,0.15);
+    color: #3b82f6;
+    border-left: 3px solid #3b82f6;
+}
+.sidebar hr {
+    margin: 1rem 0;
+    border-color: rgba(255,255,255,0.05);
+}
+
+/* ========== MAIN CONTENT ========== */
+.main-content {
+    margin-left: 280px;
+    padding: 1.5rem;
+    transition: 0.3s;
+    background: var(--bg-light);
+}
+
+/* ========== CARDS - PERSEGI PANJANG ========== */
+.card {
+    background: var(--white);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+}
+.card-header {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-dark);
+}
+
+/* ========== STAT GRID ========== */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+}
+.stat-card {
+    background: white;
+    padding: 1.2rem;
+    text-align: center;
+    border: 1px solid var(--border-light);
+}
+.stat-number {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--blue-dark);
+}
+.stat-card div:last-child {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* ========== TABEL ========== */
+.table-responsive {
+    overflow-x: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+}
+th {
+    font-weight: 700;
+    background: #f9fafb;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+}
+td {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* ========== BUTTONS ========== */
+.btn {
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    color: var(--text-dark);
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+    font-size: 0.85rem;
+}
+.btn:hover {
+    background: #f1f5f9;
+    border-color: var(--blue-soft);
+}
+.btn-primary {
+    background: var(--blue-dark);
+    border: none;
+    color: white;
+}
+.btn-primary:hover {
+    background: var(--blue-medium);
+}
+
+/* ========== ALERTS ========== */
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+}
+.alert-success {
+    background: #e6f4ea;
+    color: #2e7d32;
+}
+.alert-danger {
+    background: #fde7e7;
+    color: #c62828;
+}
+
+/* ========== PAGINATION ========== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+.pagination a, .pagination span {
+    padding: 0.5rem 1rem;
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    color: var(--text-dark);
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+.pagination .active {
+    background: var(--blue-dark);
+    border-color: var(--blue-dark);
+    color: white;
+}
+
+/* ========== FILTER BAR ========== */
+.filter-bar {
+    background: #ffffff;
+    padding: 1.2rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border-light);
+}
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.filter-group {
+    flex: 1;
+    min-width: 180px;
+}
+.filter-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: var(--text-dark);
+}
+.filter-group select, .filter-group input {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border-light);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+}
+.btn-filter, .btn-reset {
+    background: var(--blue-dark);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+.btn-reset {
+    background: #64748b;
+}
+
+/* ========== MODAL ========== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.modal.show {
+    display: flex;
+}
+.modal-content {
+    background: white;
+    max-width: 500px;
+    width: 90%;
+    padding: 1.8rem;
+    border: 1px solid var(--border-light);
+}
+.modal-content h3 {
+    margin-bottom: 1rem;
+    color: var(--blue-dark);
+    font-size: 1.3rem;
+}
+.modal-content .form-group {
+    margin-bottom: 1rem;
+}
+.modal-content label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+}
+.modal-content input, .modal-content select {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid var(--border-light);
+    font-family: 'Inter', sans-serif;
+}
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+}
+.btn-save {
+    background: var(--blue-dark);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+.btn-cancel {
+    background: #f1f5f9;
+    color: var(--text-dark);
+    border: 1px solid var(--border-light);
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+}
+
+/* ========== ACTION BUTTONS ========== */
+.action-buttons {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+.btn-action {
+    background: var(--blue-dark);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+.btn-action-primary {
+    background: #2e7d32;
+}
+.btn-action-warning {
+    background: #ff9800;
+}
+.btn-action-danger {
+    background: #c62828;
+}
+.btn-action-purple {
+    background: #9c27b0;
+}
+
+/* ========== STATUS BADGE ========== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.status-aktif {
+    background: #e0f2e9;
+    color: #1e6f3f;
+}
+.status-lulus {
+    background: #fff3e0;
+    color: #b76e0b;
+}
+.status-dipindahkan {
+    background: #e3f2fd;
+    color: #0b5e7c;
+}
+.status-mati {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+/* ========== KELAS GRID ========== */
+.kelas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+.kelas-item {
+    background: #f8fafc;
+    padding: 0.6rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-light);
+}
+
+/* ========== RECENT SECTION ========== */
+.recent-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+.recent-box {
+    flex: 1;
+    background: white;
+    padding: 1.2rem;
+    border: 1px solid var(--border-light);
+}
+.recent-box h4 {
+    margin-bottom: 0.8rem;
+    color: var(--blue-dark);
+    font-weight: 700;
+    font-size: 1rem;
+}
+.recent-list {
+    list-style: none;
+    padding: 0;
+}
+.recent-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.85rem;
+}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #1d4ed8;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .sidebar {
+        left: -280px;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+    .sidebar.active {
+        left: 0;
+    }
+    .stat-grid {
+        grid-template-columns: 1fr;
+    }
+    .recent-section {
+        flex-direction: column;
+    }
+    .kelas-grid {
+        grid-template-columns: 1fr;
+    }
+}
